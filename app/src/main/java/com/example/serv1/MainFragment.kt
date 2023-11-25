@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.serv1.databinding.FragmentMainBinding
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -26,7 +28,11 @@ import okhttp3.Response
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-
+data class ImageInfo(
+    @SerializedName("accuracy ")
+    val accuracy: String,
+    val disease: String
+)
 
 private const val PICK_IMAGE_REQUEST = 1
 
@@ -115,7 +121,9 @@ class MainFragment : Fragment() {
                 val responseData = response.body?.string()
                 activity?.runOnUiThread {
                     if (responseData != null) {
-                        binding.tvResult.text = responseData
+                        val gson = Gson()
+                        val imageInfo = gson.fromJson(responseData, ImageInfo::class.java)
+                        binding.tvResult.text = "Вероятность: ${imageInfo.accuracy}\nБолезнь: ${imageInfo.disease}"
                     } else {
                         binding.tvResult.text = "Пустой ответ от сервера"
                     }
