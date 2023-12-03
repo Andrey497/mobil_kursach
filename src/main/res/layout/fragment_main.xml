@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_result"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_pick_photo"
+        tools:text="result" />
+
+    <ImageButton
+        android:id="@+id/btn_pick_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:src="@drawable/ic_mountains"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_take_photo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_take_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_analyse_photo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_pick_photo" />
+
+    <ImageButton
+        android:id="@+id/btn_analyse_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:src="@drawable/ic_dermatology"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btn_take_photo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,23 @@
 package com.example.serv1
 
+import android.R
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import com.example.serv1.databinding.FragmentMainBinding
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -26,8 +29,6 @@ import okhttp3.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 
@@ -56,7 +57,6 @@ class MainFragment : Fragment() {
             binding.tvResult.text=""
         }
 
-
         binding.btnTakePhoto.setOnClickListener {
             dispatchTakePictureIntent()
             binding.tvResult.text=""
@@ -70,7 +70,6 @@ class MainFragment : Fragment() {
                 Toast.makeText(context, "Выберите фото из галереи", Toast.LENGTH_SHORT).show()
             }
         }
-
     }
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -128,8 +127,6 @@ class MainFragment : Fragment() {
     }
 
     private fun uploadImage(imageFile: File) {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
-
         val client = OkHttpClient.Builder()
             .connectTimeout(100, TimeUnit.SECONDS)     // Установить таймаут подключения.
             .readTimeout(100, TimeUnit.SECONDS)        // Установить таймаут чтения.
@@ -162,22 +159,13 @@ class MainFragment : Fragment() {
                 }
             }
 
-
             override fun onResponse(call: Call, response: Response) {
                 val responseData = response.body?.string()
                 activity?.runOnUiThread {
                     if (responseData != null) {
                         val gson = Gson()
                         val imageInfo = gson.fromJson(responseData, ImageInfo::class.java)
-                        val historyRecords = HistoryRecords()
                         binding.tvResult.text = "Вероятность: ${imageInfo.accuracy}\nБолезнь: ${imageInfo.disease}"
-
-//                        val newYorkDateTimePattern = "dd.MM.yyyy HH:mm z"
-//                        val formatter= DateTimeFormatter.ofPattern(newYorkDateTimePattern)
-                        val time= LocalDateTime.now().toString()
-                
-                        historyRecords.list.add(HistoryRecord(time,imageInfo.disease,imageInfo.accuracy,selectedImageFile.path.toString()))
-                        historyRecords.save(preferences)
                     } else {
                         binding.tvResult.text = "Пустой ответ от сервера"
                     }

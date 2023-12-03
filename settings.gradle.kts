@@ -12,5 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "serv1"
-include ':app'
+include(":app")
+ 
